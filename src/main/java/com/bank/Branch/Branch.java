@@ -10,6 +10,10 @@ public class Branch {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "branchName")
     private String branchName;
+    @Column(name = "Phone")
+    private String phn;
 }

@@ -2,6 +2,8 @@ package com.bank.AccountType;
 
 import com.bank.BankUser.User;
 import com.bank.BankUser.UserRepository;
+import com.bank.Branch.Branch;
+import com.bank.Branch.BranchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,9 @@ public class AccountService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BranchRepository branchRepository;
 
     public ResponseEntity<List<Account>> getAllTypes() {
         return  new ResponseEntity<>(accountRepository.findAll(), HttpStatus.OK);
@@ -41,11 +46,17 @@ public class AccountService {
             if(!userList.isEmpty()){
                 Account account = accountOptional.get();
                 for(User users: userList){
+                    Optional<Branch> branchOptional = branchRepository.findById(users.getBranchId());
+                    if(branchOptional.isPresent()){
+                        Branch branch = branchOptional.get();
+                        AccountTypeDTO accountTypeDTO = new AccountTypeDTO();
+                        accountTypeDTO.setAccType(account.getAccType());
+                        accountTypeDTO.setName(users.getName());
+                        accountTypeDTO.setBranchName(branch.getBranchName());
+                        accountTypes.add(accountTypeDTO);
+                    }
                     //Account account = accountOptional.get();
-                    AccountTypeDTO accountTypeDTO = new AccountTypeDTO();
-                    accountTypeDTO.setAccType(account.getAccType());
-                    accountTypeDTO.setName(users.getName());
-                    accountTypes.add(accountTypeDTO);
+
                 }
                 return new ResponseEntity<>(accountTypes,HttpStatus.OK);
 

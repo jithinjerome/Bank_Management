@@ -13,7 +13,7 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @GetMapping(path = "/getType")
+    @GetMapping(path = "/getAllType")
     public ResponseEntity<List<Account>> getAllTypes(){
         return accountService.getAllTypes();
     }
@@ -28,5 +28,9 @@ public class AccountController {
          accountService.deleteById(id);
     }
 
+    @GetMapping(path = "/accountType/{accTypeId}")
+    public ResponseEntity<List<AccountTypeDTO>> getByAccountType(@PathVariable Long accTypeId){
+        return accountService.getByAccountType(accTypeId);
+    }
 
 }

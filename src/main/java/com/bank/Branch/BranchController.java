@@ -1,5 +1,6 @@
 package com.bank.Branch;
 
+import com.bank.AccountType.AccountTypeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,4 +29,10 @@ public class BranchController {
     {
         branchService.deleteById(id);
     }
+
+    @GetMapping(path = "/branchName/{branchId}")
+    public ResponseEntity<List<AccountTypeDTO>> getByBranchName(@PathVariable Long branchId){
+        return branchService.getByBranchName(branchId);
+    }
+
 }

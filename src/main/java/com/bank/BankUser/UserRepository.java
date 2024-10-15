@@ -10,4 +10,6 @@ public interface UserRepository extends JpaRepository<User , Long> {
     List<User> findByAccTypeId(Long accTypeId);
 
     List<User> findByBranchId(Long branchId);
+
+    boolean existsByAccountNumber(String accountNumber);
 }

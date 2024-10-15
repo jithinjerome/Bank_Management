@@ -38,11 +38,28 @@ public class UserService {
             user1.setName(user.getName());
             user1.setPlace(user.getPlace());
             user1.setNumber(user.getNumber());
+            user1.setAccountNumber(generateUniqueNumber());
             userRepository.save(user1);
             return  new ResponseEntity<>(user1, HttpStatus.OK);
         }else{
             return new ResponseEntity<>("Branch or Account Type is invalid!",HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    private String generateUniqueNumber() {
+        String accountNumber;
+        boolean exists;
+        do{
+            accountNumber = generateAccountNumber();
+            exists = userRepository.existsByAccountNumber(accountNumber);
+
+        }while(exists);
+        return accountNumber;
+    }
+
+    private String generateAccountNumber() {
+        long number = (long)(Math.random() * 9_000_000_000L) + 1_000_000_000L;
+        return String.valueOf(number);
     }
 }

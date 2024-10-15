@@ -26,4 +26,6 @@ public class User {
     private String place;
     @Column(name = "Number")
     private String number;
+    @Column(name = "accountNumber")
+    private String accountNumber;
 }

@@ -10,7 +10,6 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private Long id;
     @Column(name = "Name")
     private String name;
@@ -28,4 +27,6 @@ public class User {
     private String number;
     @Column(name = "accountNumber")
     private String accountNumber;
+    @Column(name = "image" ,columnDefinition = "bytea")
+    private byte[] image;
 }

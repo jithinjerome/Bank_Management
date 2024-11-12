@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping(path = "/api/user")
@@ -25,6 +27,13 @@ public class UserController {
         }catch (Exception e){
             return new ResponseEntity<>("Error during registration "+e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping(path = "/image")
+    public ResponseEntity<List<UserImageDTO>> getAllUsersImage(){
+
+        List<UserImageDTO> images = userService.getAllUsersImage();
+        return ResponseEntity.ok(images);
     }
 
 }

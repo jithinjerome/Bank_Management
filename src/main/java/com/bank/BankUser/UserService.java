@@ -1,5 +1,6 @@
 package com.bank.BankUser;
 
+import com.bank.AWS.FileUploadService;
 import com.bank.AccountType.Account;
 import com.bank.AccountType.AccountRepository;
 import com.bank.Branch.Branch;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,6 +27,11 @@ public class UserService {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private FileUploadService fileUploadService;
+
+    private static final String BUCKET_NAME = "jmylibraryapp";
 
 
     public ResponseEntity<?> register(UserDTO userDTO,MultipartFile image) {
@@ -50,9 +58,12 @@ public class UserService {
             user1.setAccountNumber(generateUniqueNumber());
 
             String imageStatus;
+            String imageURL;
             try{
                 if(!image.isEmpty()){
-                    user1.setImage(image.getBytes());
+                    String keyName = "images/" + user1.getAccountNumber()+"_"+image.getOriginalFilename();
+                    imageURL = fileUploadService.uploadFile(BUCKET_NAME,keyName, image.getBytes());
+                    user1.setImageURL(imageURL);
                     imageStatus = "Image Uploaded Successfully";
                 }else{
                     imageStatus = "No Image Uploaded";
@@ -97,5 +108,16 @@ public class UserService {
     private String generateAccountNumber() {
         long number = (long)(Math.random() * 9_000_000_000L) + 1_000_000_000L;
         return String.valueOf(number);
+    }
+
+    public List<UserImageDTO> getAllUsersImage() {
+        List<UserImageDTO> userImageDTOS = new ArrayList<>();
+        List<User> userList = userRepository.findAll();
+
+        for(User user: userList){
+            UserImageDTO userImageDTO = new UserImageDTO(user.getName(),user.getImageURL());
+            userImageDTOS.add(userImageDTO);
+        }
+        return userImageDTOS;
     }
 }

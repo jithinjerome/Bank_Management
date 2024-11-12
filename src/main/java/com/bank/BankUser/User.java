@@ -1,6 +1,7 @@
 package com.bank.BankUser;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
@@ -27,6 +28,6 @@ public class User {
     private String number;
     @Column(name = "accountNumber")
     private String accountNumber;
-    @Column(name = "image" ,columnDefinition = "bytea")
-    private byte[] image;
+    @Column(name = "imageURL")
+    private String imageURL;
 }
